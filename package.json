@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "dependencies": {
     "express": "3.x",
-    "concat-stream": "1.4.8"
+    "concat-stream": "1.4.8",
+    "express-ws": "0.2.6"
   }
 }

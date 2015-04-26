@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        font-family: Tahoma, Geneva, sans-serif;
+      }
+
+      div {
+        display: inline;
+      }
+    </style>
+    <script>
+      function updateStats(example) {
+        document.getElementById('example').innerHTML = JSON.stringify(example);
+      }
+
+      var host = window.document.location.host.replace(/:.*/, '');
+      var ws = new WebSocket('ws://' + host + ':8080/exercise');
+      ws.onmessage = function (event) {
+        updateStats(JSON.parse(event.data));
+      };
+    </script>
+  </head>
+  <body>
+    <h1>Scaffolding</h1>
+    Example: <div id='example'></div><br/>
+  </body>
+</html>
