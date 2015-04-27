@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 var expressWs = require('express-ws')(app)
+var fs = require('fs');
 
 app.use(express.static(__dirname + '/public'))
 
@@ -24,4 +25,15 @@ app.post('/exercise/:userId/:sessionId', function(req, res) {
   });
 });
 
+app.get('/foo', function(req, res) {
+  fs.readFile( __dirname + '/example.json', function (err, data) {
+    console.log(data.toString('utf-8'));
+    aWss.clients.forEach(function (client) {
+      client.send(data.toString('utf-8'));
+    });
+    res.send("{}");
+  });
+});
+
 app.listen(process.env.PORT || 8080);
+
