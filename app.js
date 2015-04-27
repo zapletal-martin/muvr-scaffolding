@@ -17,14 +17,19 @@ app.ws('/exercise', function(ws, req) {
 });
 var aWss = expressWs.getWss('/exercise');
 app.post('/exercise/:userId/:sessionId', function(req, res) {
-  console.log(req.body.toString('utf-8'));
+  var json = req.body.toString('utf-8');
+  var fileName = __dirname + '/examples/' + req.param('userId') + '-' + req.param('sessionId') + '.json';
+
+  fs.writeFile(fileName, json, function (err) { console.log(err); });
   res.type('application/json');
   res.send('{}');
   aWss.clients.forEach(function (client) {
-    client.send(req.body.toString('utf-8'));
+    client.send(json);
   });
 });
 
+/*
+Browser app eyeball debugging only 
 app.get('/foo', function(req, res) {
   fs.readFile( __dirname + '/example.json', function (err, data) {
     console.log(data.toString('utf-8'));
@@ -34,6 +39,7 @@ app.get('/foo', function(req, res) {
     res.send("{}");
   });
 });
+*/
 
 app.listen(process.env.PORT || 8080);
 
