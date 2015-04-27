@@ -1,29 +1,48 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <style>
-      body {
-        font-family: Tahoma, Geneva, sans-serif;
-      }
+<head>
+  <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js" charset="utf-8"></script>
 
-      div {
-        display: inline;
-      }
-    </style>
-    <script>
-      function updateStats(example) {
-        document.getElementById('example').innerHTML = JSON.stringify(example);
-      }
+  <style>
+    body {
+      font-family: Tahoma, Geneva, sans-serif;
+    }
 
-      var host = window.document.location.host.replace(/:.*/, '');
-      var ws = new WebSocket('ws://' + host + ':8080/exercise');
-      ws.onmessage = function (event) {
-        updateStats(JSON.parse(event.data));
-      };
-    </script>
-  </head>
-  <body>
-    <h1>Scaffolding</h1>
-    Example: <div id='example'></div><br/>
-  </body>
+    div {
+      display: inline;
+    }
+
+    .axis path {
+      fill: none;
+      stroke: #777;
+      shape-rendering: crispEdges;
+    }
+
+    .axis text {
+      font-family: Lato;
+      font-size: 13px;
+    }
+  </style>
+  <script>
+    function updateStats(example) {
+      // document.getElementById('example').innerHTML = JSON.stringify(example);
+      $("#example").empty();
+      
+      document.getElementById('example').innerHTML = "";
+    }
+
+    var host = window.document.location.host.replace(/:.*/, '');
+    var ws = new WebSocket('ws://' + host + ':8080/exercise');
+    ws.onmessage = function (event) {
+      updateStats(JSON.parse(event.data));
+    };
+  </script>
+</head>
+<body>
+  <h1>Muvr Development Scaffolding</h1>
+  <div id='example'>
+    
+  </div>
+</body>
 </html>

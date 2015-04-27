@@ -1,7 +1,9 @@
 {
-  "name": "first-express-app",
-  "description": "a fine piece of express art",
+  "name": "muvr-scaffolding",
+  "description": "Muvr development scaffolding",
+  "repository":"https://github.com/muvr/muvr-scaffolding",
   "version": "0.0.1",
+  "readme":"README.md",
   "dependencies": {
     "express": "3.x",
     "concat-stream": "1.4.8",
