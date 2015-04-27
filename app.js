@@ -28,8 +28,6 @@ app.post('/exercise/:userId/:sessionId', function(req, res) {
   });
 });
 
-/*
-Browser app eyeball debugging only 
 app.get('/foo', function(req, res) {
   fs.readFile( __dirname + '/example.json', function (err, data) {
     console.log(data.toString('utf-8'));
@@ -39,7 +37,6 @@ app.get('/foo', function(req, res) {
     res.send("{}");
   });
 });
-*/
 
 app.listen(process.env.PORT || 8080);
 

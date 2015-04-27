@@ -15,6 +15,22 @@
       display: inline;
     }
 
+    .alert {
+      position: absolute;
+      z-index: 101;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: #fde073;
+      text-align: center;
+      line-height: 2.5;
+      overflow: hidden; 
+      -webkit-box-shadow: 0 0 5px black;
+      -moz-box-shadow:    0 0 5px black;
+      box-shadow:         0 0 5px black;
+      display:none;
+    }
+
     .axis path {
       fill: none;
       stroke: #777;
@@ -32,6 +48,25 @@
     };
   </style>
   <script>
+  </script>
+</head>
+<body>
+  <h1>Muvr Development Scaffolding</h1>
+  <div id='copied' class='alert'>Copied</div>
+  <div id='example'>
+    <h3>Classification</h3>
+    <p>Classified: <span id="classified"></span></p>
+    <p>Correct: <span id="correct"></span></p>
+    <div id="sensors">
+    </div>
+  </div>
+  <script type="text/javascript">
+    ZeroClipboard.config( { swfPath: "/swf/ZeroClipboard.swf" } );
+    var client = new ZeroClipboard();
+    client.on("aftercopy", function( event ) {
+      $('#copied').slideDown(250).delay(3000).slideUp(250);
+    });
+
     function chartThreed(id, data) {
       var vis = d3.select(id),
           WIDTH = 1000,
@@ -81,22 +116,42 @@
     }
 
     function updateStats(example) {
+
+      function format3d(data) {
+        return data.map(function(e) {
+          return e.x + ',' + e.y + ',' + e.z;
+        });
+      }
+
+      function formatMatlab(lines) {
+        return 'x=[' + lines.join(';\n') + '];';
+      }
+
+      function formatCsv(lines) {
+        return lines.join('\n');
+      }
+
       $("#correct").text(example.correct.sets[0].exercise);
-      $("#classified").text("[]");
+      var cs = example.classified.map(function(x) { return x.sets[0].exercise + "; confidence=" + x.sets[0].confidence });
+
+      $("#classified").text(cs.join(", "));
 
       $("#sensors").empty();
       example.fusedSensorData.forEach(function(x) {
         var id = x.deviceId + "-" + x.sensorType;
         var header = $('<h3></h3>').text("Device " + x.deviceId + ", sensor " + x.sensorType);
         var threed = $('<svg id="threed-' + id + '" width="1000" height="500"></svg>');
-        var matlab = $('<button id="matlab-' + id + '">MATLAB</button>');
-        matlab.click(function() {
-          console.log("ML");
-          ZeroClipboard.setData("text/plain", "Copy me!");
-        });
+        var lines = format3d(x.data);
+        var copyButtons = [
+          $('<button class="copy-button" data-clipboard-text="' + formatMatlab(lines) + '">MATLAB</button>'),
+          $('<button class="copy-button" data-clipboard-text="' + formatCsv(lines) + '">CSV</button>')
+        ];
         $('#sensors').append(header);
         $('#sensors').append(threed);
-        $('#sensors').append(matlab);
+        copyButtons.forEach(function(x) {
+          $('#sensors').append(x);
+          client.clip(x);
+        });
         chartThreed('#threed-' + id, x.data);
       });
     }
@@ -106,19 +161,6 @@
     ws.onmessage = function (event) {
       updateStats(JSON.parse(event.data));
     };
-
-    ZeroClipboard.config( { swfPath: "/swf/ZeroClipboard.swf" } );
-    ZeroClipboard.setData("text/plain", "Copy me!");
   </script>
-</head>
-<body>
-  <h1>Muvr Development Scaffolding</h1>
-  <div id='example'>
-    <h3>Classification</h3>
-    <p>Classified: <span id="classified"></span></p>
-    <p>Correct: <span id="correct"></span></p>
-    <div id="sensors">
-    </div>
-  </div>
 </body>
 </html>
