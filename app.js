@@ -17,8 +17,8 @@ app.use(function(req, res, next) {
 
 app.ws('/exercise', function(ws, req) {
 });
-var aWss = expressWs.getWss('/exercise');
-app.post('/exercise/:userId/:sessionId', function(req, res) {
+var aWss = expressWs.getWss('/exercise/resistance');
+app.post('/exercise/:userId/:sessionId/resistance', function(req, res) {
   var json = req.body.toString('utf-8');
   var fileName = __dirname + '/examples/' + req.param('userId') + '-' + req.param('sessionId') + '.json';
 

@@ -181,7 +181,7 @@
         });
     }
 
-    var wsLocation = 'ws://' + window.document.location.host + '/exercise';
+    var wsLocation = 'ws://' + window.document.location.host + '/exercise/resistance';
     var ws = new WebSocket(wsLocation);
     ws.onmessage = function (event) {
         updateStats(JSON.parse(event.data));
