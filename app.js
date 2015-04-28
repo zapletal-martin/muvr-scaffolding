@@ -15,7 +15,7 @@ app.use(function(req, res, next) {
   }));
 });
 
-app.ws('/exercise', function(ws, req) {
+app.ws('/exercise/resistance', function(ws, req) {
 });
 var aWss = expressWs.getWss('/exercise/resistance');
 app.post('/exercise/:userId/:sessionId/resistance', function(req, res) {
