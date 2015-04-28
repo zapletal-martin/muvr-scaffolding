@@ -7,6 +7,7 @@
   "dependencies": {
     "express": "3.x",
     "concat-stream": "1.4.8",
-    "express-ws": "0.2.6"
+    "express-ws": "0.2.6",
+    "crypto-js": "3.1.4"
   }
 }

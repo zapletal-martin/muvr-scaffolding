@@ -2,6 +2,8 @@ var express = require('express');
 var app = express();
 var expressWs = require('express-ws')(app)
 var fs = require('fs');
+var sha256 = require("crypto-js/sha256");
+var lastBody = null;
 
 app.use(express.static(__dirname + '/public'))
 
@@ -23,9 +25,19 @@ app.post('/exercise/:userId/:sessionId', function(req, res) {
   fs.writeFile(fileName, json, function (err) { console.log(err); });
   res.type('application/json');
   res.send('{}');
+  lastBody = json;
   aWss.clients.forEach(function (client) {
     client.send(json);
   });
+});
+
+app.get('/exercise/last', function(req, res) {
+  if (lastBody != null) {
+    res.type('application/json');
+    res.send(lastBody);
+  } else {
+  	res.status(404).send('{"error":"There is no body yet."}');
+  }
 });
 
 app.get('/foo', function(req, res) {
