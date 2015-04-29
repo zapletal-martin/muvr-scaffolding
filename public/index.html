@@ -155,7 +155,7 @@
 
         $("#correct").text(example.correct.sets[0].exercise);
         var cs = example.classified.map(function (x) {
-            return x.sets[0].exercise + "; confidence=" + x.sets[0].confidence
+            return x.sets[0].exercise + "; confidence=" + x.sets[0].confidence + "; repetitions=" + x.sets[0].repetitions
         });
 
         $("#classified").text(cs.join(", "));
